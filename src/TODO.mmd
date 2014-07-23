@@ -1,0 +1,151 @@
+TODO:
+
+[] write script to filter all `pandoc` templates
+    + write docs to describe JSON format for templates
+[] write script to create new `pandoc` template
+    + [1] enter template name
+    + [2] enter template command
+[] write script to filter `pandoc` default settings
+    + def settings saved to storage on configuration
+
+
+FLOW:
+
+- File Action on selected file
+- `get_input.py` to save path to cache
+- `get_input.py` to launch `dr:in` filter with format as query
+- `filters.py "input" "{query}"` to search for input format
+- `saver.py "run_input_format" "{query}"` to save format to cache
+- `rerun.py "pandoc_outputs"` to launch `dr:out` filter
+- `filters.py "output" "{query}"` to search for output format
+- `saver.py "run_output_format" "{query}"` to save output to cache
+- `rerun.py "pandoc_bool_options"` to launch `dr:opt:b` filter
+- `bool_opts.py "search" "{query}"` to search thru Boolean options
+- `bool_opts.py "save" "{query}"` to flip Boolean value and save to cache
+- IF NOT FINAL SELECTION:
+    + `rerun.py "pandoc_bool_options"` to change more Boolean options
+- IF FINAL SELECTION:
+    + `rerun.py "pandoc_arg_options"` to launch `dr:opt:a` filter
+- `arg_opts.py "search" "{query}"` to search thru Argument options
+- `arg_opts.py "set" "{query}"` to launch `dr:opt:set` to ask for value of option.
+- `arg_opts.py "save" "{query}"` to save `--flag=value` to cache
+- IF NOT FINAL SELECTION:
+    + `rerun.py "??"` to add more Argument options
+- IF FINAL SELECTION:
+    + `rerun.py "pandoc_run"` to run `pandoc`
+- `pandoctor.py` to run `pandoc` with all options selected.
+
+FILTERS:
+
+- `dr:in` filters all possible input formats
+- `dr:out` filters all possible output formats
+- `dr:opt:b` filters all boolean options
+- `dr:opt:a` filters all argument options
+- `dr:tmp` filters all saved `pandoc` templates
+- `dr:def` filters all default `pandoc` settings
+
+
+ACTIONS:
+
+- File Action for new conversion
+- File Action for template conversion
+- Script Action to save filter selection to cache
+- Script Action to convert file via `pandoc`
+
+PROCESS:
+
+1. Select file via Alfred
+2. Select File Action (new)
+3. Save file path to cache
+    - get file extension and use are `{query}` for filter
+4. Launch inputs filter with `{query}`
+5. Save input to cache
+6. Launch outputs filter
+7. Save output to cache
+8. Launch boolean options filters
+9. Save all options to cache
+10. Launch argument options filters
+11. Save all options to cache
+12. Run `pandoc` with all cached commands
+
+- - -
+
+1. Select file via Alfred
+2. Select File Action (template)
+3. Save file path to cache
+    - get file extension and use are `{query}` for filter
+4. Launch inputs filter with `{query}`
+5. Save input to cache
+6. Launch templates filter
+7. Run `pandoc` with template command
+
+```
+__usage__ = """
+pandoctor.py <action> [<key> | <profile>] [<query>]
+
+PanDoctor -- An Alfred GUI for `pandoc`
+
+Usage:
+    pandoctor.py store <key> <value>
+    pandoctor.py search <query>
+    pandoctor.py launch <query>
+
+Arguments:
+    <key>       Dictionary key to save <value> data under in cache
+    <value>     Data to be saved in cache
+    <query>     Search query
+
+Options:
+    -h, --help  Show this message
+
+This script is meant to be called from Alfred.
+
+"""
+```
+
+FUNCTIONS:
+
+- store
+    + save data to `.cache` file
+- search
+    + filter data via Alfred interface
+- launch
+    + launch another action
+
+1. Store
+API: `store(name, data)`
+    `store()` updates (i.e. add to) `name` with the `data`
+        * `name` = `run` or `pandoc`
+        * `data` = 
+            - input path (`in_path`)
+                + path to file chosen in File Action
+            - input format (`in_fmt`)
+                + pandoc format of input file
+            - output format (`out_fmt`)
+                + pandoc format of final output file
+            - options (`options`)
+                + any pandoc CLI options
+            (for `pandoc`)
+            - all inputs, outputs, and options
+                + dicts of all pandoc info
+
+2. Search
+API: `search(name, query)`
+    `search()` filters `name` data using `query`
+    * `name` =
+        - inputs
+        - outputs
+        - options
+        - templates
+        - defaults
+    * `query` = ANYTHING
+
+3. Launch
+API: `launch(trigger, query)`
+    `launch()` activates the `trigger` Alfred process with `query`
+        - input search
+        - output search
+        - options search
+        - arg option set
+        - pandoc itself
+
