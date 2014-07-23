@@ -12,44 +12,39 @@ TODO:
 FLOW:
 
 - File Action on selected file
-- `get_input.py` to save path to cache
-- `get_input.py` to launch `dr:in` filter with format as query
-- `filters.py "input" "{query}"` to search for input format
-- `saver.py "run_input_format" "{query}"` to save format to cache
-- `rerun.py "pandoc_outputs"` to launch `dr:out` filter
-- `filters.py "output" "{query}"` to search for output format
-- `saver.py "run_output_format" "{query}"` to save output to cache
-- `rerun.py "pandoc_bool_options"` to launch `dr:opt:b` filter
-- `bool_opts.py "search" "{query}"` to search thru Boolean options
-- `bool_opts.py "save" "{query}"` to flip Boolean value and save to cache
+- save path to cache
+- launch `dr:in` filter with format as query
+- search for input format
+- save format to cache
+- launch `dr:out` filter
+- search for output format
+- save output to cache
+- launch `dr:opt` filter
+- search thru Boolean and Argument options
+- IF BOOLEAN OPTION:
+    + flip Boolean value and save to cache
+- IF ARGUMENT OPTION:
+    + launch `dr:opt:set` to ask for value of option.
+    + save `--flag=value` to cache
 - IF NOT FINAL SELECTION:
-    + `rerun.py "pandoc_bool_options"` to change more Boolean options
+    + `rerun.py "pandoc_options"` to see/change more options
 - IF FINAL SELECTION:
-    + `rerun.py "pandoc_arg_options"` to launch `dr:opt:a` filter
-- `arg_opts.py "search" "{query}"` to search thru Argument options
-- `arg_opts.py "set" "{query}"` to launch `dr:opt:set` to ask for value of option.
-- `arg_opts.py "save" "{query}"` to save `--flag=value` to cache
-- IF NOT FINAL SELECTION:
-    + `rerun.py "??"` to add more Argument options
-- IF FINAL SELECTION:
-    + `rerun.py "pandoc_run"` to run `pandoc`
-- `pandoctor.py` to run `pandoc` with all options selected.
+    + run `pandoc` with all options
 
 FILTERS:
 
 - `dr:in` filters all possible input formats
 - `dr:out` filters all possible output formats
-- `dr:opt:b` filters all boolean options
-- `dr:opt:a` filters all argument options
-- `dr:tmp` filters all saved `pandoc` templates
-- `dr:def` filters all default `pandoc` settings
+- `dr:opt` filters all boolean and argument options
+- `dr:tmp` filters all saved `pandoc` templates [TODO]
+- `dr:def` filters all default `pandoc` settings [TODO]
 
 
 ACTIONS:
 
 - File Action for new conversion
-- File Action for template conversion
-- Script Action to save filter selection to cache
+- File Action for template conversion [TODO]
+- Script Actions to save filter selection to cache
 - Script Action to convert file via `pandoc`
 
 PROCESS:
@@ -69,7 +64,7 @@ PROCESS:
 12. Run `pandoc` with all cached commands
 
 - - -
-
+[TODO]
 1. Select file via Alfred
 2. Select File Action (template)
 3. Save file path to cache
