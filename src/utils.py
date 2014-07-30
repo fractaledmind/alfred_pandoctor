@@ -43,16 +43,20 @@ def json_read(path, encoding='utf-8'):
             content = ''.join(file_obj.readlines())
             file_obj.close()
 
-        ## Looking for comments
-        match = JSON_COMMENT_RE.search(content)
-        while match:
-            # single line comment
-            content = content[:match.start()] + content[match.end():]
+        if not content == '':
+            ## Looking for comments
             match = JSON_COMMENT_RE.search(content)
+            while match:
+                # single line comment
+                content = content[:match.start()] + content[match.end():]
+                match = JSON_COMMENT_RE.search(content)
 
-        return json.loads(content)
+            return json.loads(content)
+        else:
+            return None
     else:
-        raise Exception("'{}' does not exist.".format(path))
+        open(path, 'w')
+        return None
 
 def json_write(data, path):
     """Write `data` to `path` as formatted JSON string"""

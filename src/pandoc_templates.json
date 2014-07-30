@@ -1,0 +1,69 @@
+/*
+	PANDOC TEMPLATED COMMANDS
+
+	The ``defaults``, at initiation the `parse-raw`, `smart`, `normalize`, and `standalone`
+	options, are found at ``pandoc_defaults.json``.
+
+	HOW TO CREATE TEMPLATE:
+		+ take your CLI pandoc command 
+			(e.g. "pandoc -s -S --toc -c pandoc.css -A footer.html README -o example3.html")
+		+ convert all "short option + space + argument" to "long option + '=' + argument"
+			(e.g. "pandoc -s -S --toc --css=pandoc.css --include-after-body=footer.html README --output=example3.html")
+		+ split all options into list of individual options
+			(e.g. [pandoc, -s, -S, --toc, --css=pandoc.css, --include-after-body=footer.html, README, --output=example3.html])
+		+ remove initial call to `pandoc` and replace input text path with ``{input}`` variable
+			(e.g. [-s, -S, --toc, --css=pandoc.css, --include-after-body=footer.html, {input}, --output={input}.html])
+		+ make sure every option is a JSON string
+			(e.g. ["-s", "-S", "--toc", "--css=pandoc.css", "--include-after-body=footer.html", "{input}", "--output={input}.html"])
+		+ give it a memorable name
+		+ determine if you want to automatically add your default options to the command or not. 
+
+	In order to make your templates more extensible, you can use any of 3 built-in
+	variables that relate to the file chosen to convert:
+		* {input_path} = The full path to the file, including file extension
+		* {input_name} = The full path to the file, without file extension
+		* {input_dir} = The full path to the parent directory of the file
+
+	For example, this template would only work if you kept a project directory 
+	that contained both `biblio.bib` and `chicago-author-date.csl` alongside
+	your input file. 
+		{
+			"name": "Biblio Test",
+			"use_defaults": false,
+			"options": [
+				"-s", 
+				"-S",
+				"--biblio={input_dir}/biblio.bib",
+				"--csl={input_dir}/chicago-author-date.csl", 
+				"{input_file}",
+				"--output={input_name}.html"
+			]
+		}
+*/
+[
+	{
+		"name": "XeLaTeX PDF",
+		"use_defaults": true,
+		"options": [
+			"-N",
+			"--variable=mainfont:Georgia",
+			"--variable=sansfont:Arial",
+			"--variable=monofont:Monaco",
+			"--variable=fontsize:12pt",
+			"{input_file}",
+			"--latex-engine=xelatex",
+			"--toc",
+			"--output={input_name}.pdf"
+		]
+	},
+	{
+		"name": "Pandoc MD -> HTML",
+		"use_defaults": true,
+		"options": [
+			"--toc",
+			"--css=pandoc.css",
+			"{input_file}", 
+			"--output={input_name}.html"
+		]
+	}
+]

@@ -1,50 +1,31 @@
 TODO:
 
-[] write script to filter all `pandoc` templates  
-    + write docs to describe JSON format for templates  
-[] write script to create new `pandoc` template  
-    + [1] enter template name  
-    + [2] enter template command  
-[] write script to filter `pandoc` default settings  
-    + def settings saved to storage on configuration  
+[] write script to filter all `pandoc` templates
+    + write docs to describe JSON format for templates
+[] write script to create new `pandoc` template
+    + [1] enter template name
+    + [2] enter template command
+[] write script to filter `pandoc` default settings
+    + def settings saved to storage on configuration
 
 
-FLOW:
 
-- File Action on selected file
-- save path to cache
-- launch `dr:in` filter with format as query
-- search for input format
-- save format to cache
-- launch `dr:out` filter
-- search for output format
-- save output to cache
-- launch `dr:opt` filter
-- search thru Boolean and Argument options
-- IF BOOLEAN OPTION:
-    + flip Boolean value and save to cache
-- IF ARGUMENT OPTION:
-    + launch `dr:opt:set` to ask for value of option.
-    + save `--flag=value` to cache
-- IF NOT FINAL SELECTION:
-    + `rerun.py "pandoc_options"` to see/change more options
-- IF FINAL SELECTION:
-    + run `pandoc` with all options
 
 FILTERS:
 
 - `dr:in` filters all possible input formats
 - `dr:out` filters all possible output formats
-- `dr:opt` filters all boolean and argument options
-- `dr:tmp` filters all saved `pandoc` templates [TODO]
-- `dr:def` filters all default `pandoc` settings [TODO]
+- `dr:opt:b` filters all boolean options
+- `dr:opt:a` filters all argument options
+- `dr:tmp` filters all saved `pandoc` templates
+- `dr:def` filters all default `pandoc` settings
 
 
 ACTIONS:
 
 - File Action for new conversion
-- File Action for template conversion [TODO]
-- Script Actions to save filter selection to cache
+- File Action for template conversion
+- Script Action to save filter selection to cache
 - Script Action to convert file via `pandoc`
 
 PROCESS:
@@ -64,7 +45,7 @@ PROCESS:
 12. Run `pandoc` with all cached commands
 
 - - -
-[TODO]
+
 1. Select file via Alfred
 2. Select File Action (template)
 3. Save file path to cache
