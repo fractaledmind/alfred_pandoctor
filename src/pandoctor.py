@@ -5,54 +5,49 @@
 #
 # MIT Licence. See http://opensource.org/licenses/MIT
 #
-# Created on 11-07-2014
+# Created on 29-07-2014
 #
 from __future__ import unicode_literals
 
 # Standard Library
 import re
 import sys
-import json
 import os.path
 import subprocess
+
 # Workflow Library
 import utils
 from workflow import Workflow, web, bundler
 from workflow.workflow import MATCH_ALL, MATCH_ALLCHARS
+
 # Bundler Library
 bundler.init()
 from bs4 import BeautifulSoup
 from docopt import docopt
 
 
-__version__ = '0.9'
+__version__ = '1.0.1'
 
 __usage__ = """
 PanDoctor -- An Alfred GUI for `pandoc`
 
 Usage:
-    pandoctor.py store <key> <value>
-    pandoctor.py search <scope> <query>
-    pandoctor.py launch <trigger> <query>
-    pandoctor.py run <type>
     pandoctor.py config
+    pandoctor.py store <flag> <argument>
+    pandoctor.py search <flag> <argument>
+    pandoctor.py launch <flag> <argument>
+    pandoctor.py run <flag>
+    pandoctor.py help <flag>
 
 Arguments:
-    <key>       Dictionary key to save <value> data under in cache
-    <value>     Data to be saved in cache
-    <scope>     Scope of searchable data
-    <query>     Search query
-    <trigger>   Trigger name for Alfred's "External Trigger"
-    <type>      A template command or GUI-created command?
+    <flag>      Determines which specific code-path to follow
+    <argument>  The value to be stored, searched, or passed on
 
 Options:
     -h, --help  Show this message
 
 This script is meant to be called from Alfred.
-
 """
-
-PANDOC_README = 'http://johnmacfarlane.net/pandoc/README.html'
 
 DELIMITER = '➣'
 
@@ -66,15 +61,16 @@ FORMATS = {
     'dbk': 'docbook',
     'hs': 'native',
     'md': 'markdown',
+    'mmd': 'markdown_phpextra',
     'rest': 'rst',
     'tex': 'latex',
     'txt': 'markdown'
 }
 
-KEYS = (
+RUNNER_KEYS = (
     'in_path',
-    'in_fmt',
-    'out_fmt'
+    'in_format',
+    'out_format'
 )
 
 DEFAULT_OPTIONS = (
@@ -88,6 +84,7 @@ DEFAULT_OPTIONS = (
 ##################################################
 # Applescript Helpers
 ##################################################
+
 
 def _applescriptify(text):
     """Replace double quotes in `text` for Applescript.
@@ -117,6 +114,7 @@ class Pandoc(object):
         self.wf = wf
         self.data = self.get_stored()
 
+
     def config(self):
         """Save `pandoc` info to data storage.
         """
@@ -124,21 +122,13 @@ class Pandoc(object):
         self.store('pandoc', 'inputs', self._formats('input'))
         self.store('pandoc', 'options', self._options)
         self.store('pandoc', 'arg_options', self._arg_option_flags)
-
-        defaults = 'pandoc_defaults.json'
-        if not os.path.exists(self.wf.datafile(defaults)):
-            defs = utils.path_read(self.wf.workflowfile(defaults))
-            utils.path_write(defs, self.wf.datafile(defaults))
-
-        templates = 'pandoc_templates.json'
-        if not os.path.exists(self.wf.datafile(templates)):
-            defs = utils.path_read(self.wf.workflowfile(templates))
-            utils.path_write(defs, self.wf.datafile(templates))
         return 1
-        
+
+
     #-----------------------------------------------------------------
     ## Pandoc properties
     #-----------------------------------------------------------------
+
 
     @property
     def path(self):
@@ -154,12 +144,14 @@ class Pandoc(object):
             else:
                 raise RuntimeError("Pandoc is not installed!")
 
+
     @property
     def version(self):
         """Get version of installed `pandoc`.
         """
-        version = self._info('--version').splitlines()[0]
+        version = self._pandoc_info('--version').splitlines()[0]
         return version.replace('pandoc ', '').strip()
+
 
     @property
     def outputs(self):
@@ -167,11 +159,13 @@ class Pandoc(object):
         """
         return self.data['outputs']
 
+
     @property
     def inputs(self):
         """All possible input formats for `pandoc`.
         """
         return self.data['inputs']
+
 
     @property
     def options(self):
@@ -179,20 +173,24 @@ class Pandoc(object):
         """
         return self.data['options']
 
+
     @property
     def arg_options(self):
         """All possible options for `pandoc`.
         """
         return self.data['arg_options']
 
+
     #-----------------------------------------------------------------
     ## Pandoc Storage methods
     #-----------------------------------------------------------------
+
 
     def get_stored(self):
         """Get pandoc info from cache file.
         """
         return self.wf.cached_data('pandoc', max_age=0)
+
 
     def store(self, name, key, data):
         """Updates `name` cache file with the `data`.
@@ -213,9 +211,11 @@ class Pandoc(object):
             self.wf.cache_data(name, stored)
         return True
 
+
     #-------------------------------------------------------
     ## Sub-methods
     #-------------------------------------------------------
+
 
     @staticmethod
     def _formats(kind):
@@ -230,7 +230,7 @@ class Pandoc(object):
             elif '<dt><code>-t</code>' in line:
                 outputs = re.findall(format_re, lines[i+1])
 
-        d_outputs = []
+        d_outputs = [{'arg': 'pdf', 'description': 'Portable Document Format'}]
         for out in outputs:
             d_outputs.append({'arg': out[0], 'description': out[1]})
         d_inputs = []
@@ -242,7 +242,8 @@ class Pandoc(object):
         elif kind == 'input':
             return d_inputs
 
-    def _info(self, flag):
+
+    def _pandoc_info(self, flag):
         """Get man/help page for `pandoc`.
         """
         try:
@@ -250,10 +251,11 @@ class Pandoc(object):
         except OSError:
             raise OSError("You probably do not have pandoc installed.")
 
+
     def _options(self):
         """Get all possible options for `pandoc`.
         """
-        man_page = self._info('--help').splitlines(False)
+        man_page = self._pandoc_info('--help').splitlines(False)
         idx = man_page.index('Options:') + 1
         options = man_page[idx:]
         args = []
@@ -292,12 +294,13 @@ class Pandoc(object):
                              'status': status})
         return args
 
+
     @staticmethod
     def _arg_option_flags():
         """Get short and long form of all `pandoc` argument options.
         """
         # Soupify the HTML of pandoc README
-        req = web.get(PANDOC_README)
+        req = web.get('http://johnmacfarlane.net/pandoc/README.html')
         req.raise_for_status()
         soup = BeautifulSoup(req.text)
 
@@ -312,7 +315,6 @@ class Pandoc(object):
                     cli_arg_options.append(opt.text)
         return cli_arg_options
 
-    
 
 ################################################################################
 #     Pandoctor Object
@@ -324,131 +326,193 @@ class PanDoctor(object):
         self.wf = wf
         self.runner = self.wf.cached_data('runner', max_age=0)
         self.pandoc = Pandoc(wf)
-        self.key = None
-        self.value = None
-        self.scope = None
-        self.query = None
-        self.trigger = None
-        self.type = None
+        self.flag = None
+        self.arg = None
 
-    #-----------------------------------------------------------------
-    ## Main API method
-    #-----------------------------------------------------------------
+
+#-----------------------------------------------------------------
+## Main API method
+#-----------------------------------------------------------------
+
 
     def run(self, args):
         """Main API method.
         """
-        self.key = args['<key>']
-        self.value = args['<value>']
-        self.scope = args['<scope>']
-        self.query = args['<query>']
-        self.trigger = args['<trigger>']
-        self.type = args['<type>']
+        self.flag = args['<flag>']
+        if self.flag != None: 
+            self.flag = self.flag.strip()
+        self.arg = args['<argument>']
+        if self.arg != None:
+            self.arg = self.arg.strip()
 
-        actions = ('store', 'search', 'launch', 'run', 'config')
+        actions = ('store', 'search', 'launch', 'run', 'config', 'help')
 
         for action in actions:
             if args.get(action):
-                methname = 'do_{}'.format(action)
-                meth = getattr(self, methname, None)
-                if meth:
-                    return meth()
+                method_name = '{}_codepath'.format(action)
+                method = getattr(self, method_name, None)
+                if method:
+                    return method()
                 else:
                     raise ValueError('Unknown action : {}'.format(action))
 
-    #-------------------------------------------------------
-    ### `Config` method
-    #-------------------------------------------------------
 
-    def do_config(self):
+#-------------------------------------------------------
+### `Help` method
+#-------------------------------------------------------
+
+
+    def help_codepath(self):
+        """Access various helpful items.
+        """
+        if self.flag == 'filter':
+            self.help_filter()
+        else:
+            self.help_run()
+
+
+    #---------------------------------------------
+    #### `Help` main branches
+    #---------------------------------------------
+
+
+    def help_filter(self):
+        """Filter for help items.
+        """
+        self.wf.add_item("Pandoc ReadMe",
+                        "Open Pandoc's ReadMe file?", 
+                        valid=True, 
+                        arg='p:readme')
+        self.wf.add_item("Pandoctor ReadMe",
+                        "Open Pandoctor's ReadMe file?", 
+                        valid=True, 
+                        arg='dr:readme')
+        self.wf.add_item("Root",
+                        "Open Pandoctor's Root Folder?", 
+                        valid=True, 
+                        arg='workflow:openworkflow')
+        self.wf.add_item("Storage",
+                        "Open Pandoctor's Storage Folder?", 
+                        valid=True, 
+                        arg='workflow:opendata')
+        self.wf.add_item("Cache",
+                        "Open Pandoctor's Cache Folder?", 
+                        valid=True, 
+                        arg='workflow:opencache')
+        self.wf.add_item("Logs",
+                        "Open Pandoctor's Logs?", 
+                        valid=True, 
+                        arg='workflow:openlog')
+        
+        self.wf.send_feedback()
+
+
+    def help_run(self):
+        """Launch various help items.
+        """
+        # Workflow will take care of all other help items
+        if self.flag == 'dr:readme':
+            readme = 'http://hackademic.postach.io/pandoctor-alfred-workflow'
+        elif self.flag == 'p:readme':
+            readme = self.wf.workflowfile('help/pandoc_readme.html')
+        subprocess.check_output(['open', readme])
+
+
+#-------------------------------------------------------
+### `Config` method
+#-------------------------------------------------------
+
+
+    def config_codepath(self):
         """Save all pertinent `pandoc` info to cache.
         """
         self.pandoc.config()
         return "Configuration Complete!"
 
-    #-------------------------------------------------------
-    ### `Search` method
-    #-------------------------------------------------------
 
-    def do_search(self):
+#-------------------------------------------------------
+### `Search` method
+#-------------------------------------------------------
+
+
+    def search_codepath(self):
         """Search/Show data for given scope.
         """
-        prop = 'options' if self.scope == 'ignore' else self.scope
+        prop = 'options' if self.flag in ('ignore', 'default') else self.flag
         data = getattr(self.pandoc, prop, None)
 
+        # Ensure each Script Filter has informational header
         self._add_header()
         
-        if self.scope in ('inputs', 'outputs'):
+        if self.flag in ('inputs', 'outputs'):
             self.search_formats(data)
-        elif self.scope == 'options':
+        
+        elif self.flag == 'options':
             self.search_options(data)
-        elif self.scope == 'ignore':
-            self.search_ignore(data)
-        elif self.scope == 'templates':
+        
+        elif self.flag == 'ignore':
+            self.search_ignores(data)
+
+        elif self.flag == 'default':
+            self.search_defaults(data)
+
+        elif self.flag == 'templates':
             self.search_templates()
 
+        elif self.flag == 'set_template_default':
+            self.search_booleans()
+
+        # Pass all Alfred items
         self.wf.send_feedback()
 
+
     #---------------------------------------------
-    #### `Search` sub-methods
+    #### `Search` main branches
     #---------------------------------------------
+
 
     def search_formats(self, data):
         """Search `input` or `output` formats.
         """
-        # Function to generate search string
-        func = lambda x: ' '.join([x['arg'], x['description']])
-        
-        # Filter or show all if `query` = '.'
-        results = self.wf.filter(self.query, data,
-                                key=func, 
-                                match_on=MATCH_ALL ^ MATCH_ALLCHARS,
-                                empty_query='.')
+        res = self._filter(data, lambda x: ' '.join([x['arg'], x['description']]))
         
         # Prepare Alfred feedback
-        for item in results:
+        for item in res:
             self.wf.add_item(item['arg'],
                              item['description'],
                              arg=item['arg'],
                              valid=True)
 
+
     def search_options(self, data):
         """Search `options`.
         """
+        results = self._filter(data, lambda x: ' '.join([x['full'], x['type']]))
 
-        # Function to generate search string
-        func = lambda x: ' '.join([x['full'], x['type']])
-        
-        # Filter or show all if `query` = '.'
-        results = self.wf.filter(self.query, data,
-                                key=func, 
-                                match_on=MATCH_ALL ^ MATCH_ALLCHARS,
-                                empty_query='.')
-        
         # Get all option keys already assigned
         runner_opts = []
         if self.runner is not None:
-            runner_opts = [k for k in self.runner.keys() if k not in KEYS]
-
-        ignored_opts = utils.json_read(self.wf.datafile('opts_ignore.json'))
+            runner_opts = [k for k in self.runner.keys()
+                            if k not in RUNNER_KEYS]
         
         # Prepare Alfred feedback
         for item in results:
-            # Ignore `input` and `output` options
-            # or ignore any user selected ignore options
-            if (item['flag'] in ('to', 'from')
-                 or
-                    (ignored_opts is not None 
-                      and item['flag'] in ignored_opts
-                    )
-                ):
+            if self._check_option(item) == False:
                 continue
 
+            # Check for user defaults
+            # and change status accordingly
+            if os.path.exists(self.wf.datafile('user_defaults.json')):
+                item['status'] = False
+                defs = utils.json_read(self.wf.datafile('user_defaults.json'))
+                if item['flag'] in defs:
+                    item['status'] = True
+
             # Catch any pre-set options
-            elif item['flag'] in runner_opts:
+            if item['flag'] in runner_opts:
                 # get item's pre-set status value
                 item['status'] = next((val for key, val in self.runner.items()
-                                        if key == item['flag']), None)
+                                    if key == item['flag']), None)
 
             # Prepare item subtitle and icon
             subtitle = 'Type: {}'.format(item['type'])
@@ -463,24 +527,18 @@ class PanDoctor(object):
                              valid=True,
                              icon=icon)
 
-    def search_ignore(self, data):
+
+    def search_ignores(self, data):
         """Search thru options user wants to ignore.
         """
+        results = self._filter(data, lambda x: ' '.join([x['full'], x['type']]))
 
-        # Function to generate search string
-        func = lambda x: ' '.join([x['full'], x['type']])
-        
-        # Filter or show all if `query` = '.'
-        results = self.wf.filter(self.query, data,
-                                key=func, 
-                                match_on=MATCH_ALL ^ MATCH_ALLCHARS,
-                                empty_query='.')
-
-        ignored_opts = utils.json_read(self.wf.datafile('opts_ignore.json'))
+        ignored_opts = utils.json_read(self.wf.datafile('user_ignore.json'))
         
         # Prepare Alfred feedback
         for item in results:
             icon = 'icons/pandoc.png'
+            
             # Ignore user chosen ignored_opts options
             if item['flag'] in ('to', 'from'):
                 continue
@@ -500,19 +558,47 @@ class PanDoctor(object):
                         valid=True,
                         icon=icon)
 
+
+    def search_defaults(self, data):
+        """Search through options to set as default.
+        """
+        results = self._filter(data, lambda x: ' '.join([x['full'], x['type']]))
+
+        default_opts = utils.json_read(self.wf.datafile('user_defaults.json'))
+        
+        # Prepare Alfred feedback
+        for item in results:
+            icon = 'icons/pandoc.png'
+            
+            # Ignore user chosen default_opts options
+            if item['flag'] in ('to', 'from'):
+                continue
+            
+            elif (default_opts is not None 
+                    and item['flag'] in default_opts
+                 ):
+                icon = 'icons/pandoc_on.png'
+
+            # Prepare item subtitle and icon
+            subtitle = 'Type: {}'.format(item['type'])
+
+            # Add item to Alfred results
+            self.wf.add_item(item['flag'],
+                        subtitle,
+                        arg=item['flag'],
+                        valid=True,
+                        icon=icon)
+
+
     def search_templates(self):
         """Display the names of all the user's Pandoc Templates.
         """
-        templates = utils.json_read(self.wf.datafile('pandoc_templates.json'))
+        tmps = utils.json_read(self.wf.datafile('user_templates.json'))
+        if not tmps:
+            # Show default Templates if no user ones created
+            tmps = utils.json_read(self.wf.workflowfile('pandoc_templates.json'))
 
-        # Function to generate search string
-        func = lambda x: x['name']
-        
-        # Filter or show all if `query` = '.'
-        results = self.wf.filter(self.query, templates,
-                                key=func, 
-                                match_on=MATCH_ALL ^ MATCH_ALLCHARS,
-                                empty_query='.')
+        results = self._filter(tmps, lambda x: x['name'])
         
         # Prepare Alfred feedback
         for item in results:
@@ -522,30 +608,53 @@ class PanDoctor(object):
                              arg=item['name'],
                              valid=True)
 
+
+
+    def search_booleans(self):
+        """Display ``True`` and ``False`` as options.
+        """
+        booleans = ('True', 'False')
+        results = self._filter(booleans, lambda x: x)
+        
+        # Prepare Alfred feedback
+        for item in results:
+            self.wf.add_item(item,
+                            'Add Default Options to new user template?',
+                            arg='Defaults ➣' + item,
+                            valid=True)
+            
+
+
     #---------------------------------------------
     #### `Search` lower-level method
     #---------------------------------------------
+
 
     def _add_header(self):
         """Add an info header to the top of the search.
         """
 
-        if self.scope in ('inputs', 'outputs', 'templates'):
-            if self.scope in ('inputs', 'outputs'):
+        if self.flag in ('inputs', 'outputs', 'templates'):
+            if self.flag in ('inputs', 'outputs'):
                 sub_post = " format."
-            elif self.scope == 'templates':
+            elif self.flag == 'templates':
                 sub_post = " command."
-            header = "Pandoc " + self.scope.capitalize()
-            header_sub = "Select the proper " + str(self.scope[:-1]) + sub_post
+
+            header = "Pandoc " + self.flag.capitalize()
+            header_sub = "Select the proper " + str(self.flag[:-1]) + sub_post
             header_arg = None
             header_valid = False
             header_icon = "icons/pandoc_info.png"
-        elif self.scope in ('options', 'ignore'):
-            header = "Done setting " + self.scope.capitalize() + "?"
+
+        elif self.flag in ('options', 'ignore', 'default'):
+            header = "Done setting " + self.flag.capitalize() + "?"
             header_sub = "Select this item when you've finished all selections."
             header_arg = "[done]"
             header_valid = True
             header_icon = "icons/pandoc_qu.png"
+
+        elif self.flag == 'set_template_default':
+            return 0
         
         # Ensure first item explains search or is option to end session.
         self.wf.add_item(header,
@@ -554,98 +663,212 @@ class PanDoctor(object):
                          valid=header_valid,
                          icon=header_icon)
 
-    #-------------------------------------------------------
-    ### `Store` method
-    #-------------------------------------------------------
 
-    def do_store(self):
+    def _check_option(self, item):
+        """Determine if item should be passed on or not.
+        """
+        # Get all options user wants ignored
+        ignored_opts = utils.json_read(self.wf.datafile('user_ignore.json'))
+        
+        # Ignore `input` and `output` options
+        # or ignore any user selected ignore options
+        if (item['flag'] in ('to', 'from')
+             or
+                (ignored_opts is not None 
+                  and item['flag'] in ignored_opts
+                )
+            ):
+            return False
+        else:
+            return True
+
+
+    def _filter(self, data, func):
+        """Use ``Workflow``'s ``filter`` method.
+        """
+        results = self.wf.filter(self.arg, data,
+                                key=func, 
+                                match_on=MATCH_ALL ^ MATCH_ALLCHARS)
+        return results
+
+
+#-------------------------------------------------------
+### `Store` method
+#-------------------------------------------------------
+
+
+    def store_codepath(self):
         """Updates `runner` cache file with the `data`.
         """
-        arg_out = '.'
+        arg_out = ''
+
         # if a base key
-        if self.key in KEYS:
-            self.store(self.value.strip())
+        if self.flag in RUNNER_KEYS:
+            arg_out = self.add_runner_base()
 
         # if option key
-        elif self.key == 'options':
-            flag = self.value.strip()
-
-            # if final options selection
-            if flag == '[done]':
-                self.launch('pandoc_run', 'gui')
-                arg_out = '[pause]'
-            
-            # if boolean option
-            elif self.boolean_option(flag):
-                status = self.flip_value(flag)
-                self.key = flag
-                self.store(status)
-            # or argument option
-            else:
-                # need to set Argument
-                if DELIMITER not in flag:
-                    arg = "{} {} ".format(flag, DELIMITER)
-                    self.launch('pandoc_opt_set', arg)
-                    arg_out = '[pause]'
-                # need to save set Argument
-                else:
-                    flag, status = self._parse_query(flag)
-                    self.key = flag
-                    self.store(status)
+        elif self.flag == 'options':
+            arg_out = self.add_runner_option()
 
         # if ignore key
-        elif self.key == 'ignore':
-            flag = self.value.strip()
-            self.ignore(flag)
+        elif self.flag == 'ignore':
+            arg_out = self.add_ignore(self.arg)
+
+        # if default key
+        elif self.flag == 'default':
+            arg_out = self.add_default(self.arg)
+
 
         # if template key
-        elif self.key == 'template':
-            self.add_template(self.value)
+        elif self.flag == 'template':
+            arg_out = self.add_template()
         
         return arg_out
+
+
+    #---------------------------------------------
+    #### `Store` main branches
+    #---------------------------------------------
+
+
+    def add_runner_base(self):
+        """Add basic info (path, input format, output format)
+        to ``runner.cache``.
+        """
+        self._store(self.flag, self.arg)
+        return ''
+
+
+    def add_runner_option(self):
+        """Add an option to ``runner.cache``.
+        """
+        arg_out = ''
+
+        # if exit item selected
+        if self.arg == '[done]':
+            self._launch('pandoc_run', 'gui')
+            arg_out = '[pause]'
+        
+        # if boolean option
+        elif self._is_boolean_option(self.arg):
+            status = self._flip_value(self.arg)
+            self._store(self.arg, status)
+        
+        # or argument option
+        else:
+            # need to set Argument
+            if DELIMITER not in self.arg:
+                arg = "{} {} ".format(self.arg, DELIMITER)
+                self._launch('pandoc_opt_set', arg)
+                arg_out = '[pause]'
+            
+            # need to save set Argument
+            else:
+                flag, status = self._parse_query(self.arg)
+                self._store(flag, status)
+
+        return arg_out
+
+
+    def add_ignore(self, value):
+        """Store list of options to ignore.
+        """
+        arg_out = ''
+
+        # If exit item selected
+        if self.arg == '[done]':
+            arg_out = '[pause]'
+        else:
+            ignored = utils.json_read(self.wf.datafile('user_ignore.json'))
+            if ignored:
+                ignored.extend([value])
+                clean = list(set(ignored))
+                utils.json_write(clean, self.wf.datafile('user_ignore.json'))
+            else:
+                utils.json_write([value], self.wf.datafile('user_ignore.json'))
+
+        return arg_out
+
+
+    def add_default(self, value):
+        """Store list of options to be defaults.
+        """
+        arg_out = ''
+
+        # If exit item selected
+        if self.arg == '[done]':
+            arg_out = '[pause]'
+        else:
+            defaults = utils.json_read(self.wf.datafile('user_defaults.json'))
+            if defaults:
+                defaults.extend([value])
+                clean = list(set(defaults))
+                utils.json_write(clean, self.wf.datafile('user_defaults.json'))
+            else:
+                utils.json_write([value], self.wf.datafile('user_defaults.json'))
+
+        return arg_out
+
+
+    def add_template(self):
+        """Add a new template in JSON format to `pandoc_templates.json`.
+        """
+        if DELIMITER in self.arg:
+            key, value = self._parse_query(self.arg)
+            if key == 'Name':
+                self._store_template_info('name', value)
+            elif key == 'Defaults':
+                bool_v = utils.to_bool(value)
+                self._store_template_info('use_defaults', bool_v)
+            elif key == 'Command':
+                clean_cmd = self._parse_template(value)
+                self._store_template_info('options', clean_cmd)
+        return 'Template successfully created!'
+
 
     #---------------------------------------------
     #### `Store` sub-methods
     #---------------------------------------------
 
-    def store(self, value):
+
+    def _store(self, key, value):
         """Store data to cache.
         """
         if self.runner:
             # new `key:value` pair
-            if not self.runner.has_key(self.key):
-                self.runner.update({self.key: value})
+            if not self.runner.has_key(key):
+                self.runner.update({key: value})
                 self.wf.cache_data('runner', self.runner)
 
             # update `value` of `key`
             else:
-                self.runner[self.key] = value
+                self.runner[key] = value
                 self.wf.cache_data('runner', self.runner)
         else:
-            self.wf.cache_data('runner', {self.key: value})
+            self.wf.cache_data('runner', {key: value})
         return True
 
-    def ignore(self, value):
-        """Store list of options to ignore.
+
+    def _store_template_info(self, key, value):
+        """Store dictionary info for new user template.
         """
-        ignored = utils.json_read(self.wf.datafile('opts_ignore.json'))
-        if ignored:
-            ignored.extend([value])
-            clean = list(set(ignored))
-            utils.json_write(clean, self.wf.datafile('opts_ignore.json'))
+        tmps = utils.json_read(self.wf.datafile('user_templates.json'))
+        if tmps:
+            if key == 'name':
+                d = [{key: value}]
+                tmps.extend(d)
+            else:
+                for temp in tmps:
+                    if len(temp.keys()) != 3:
+                        temp.update({key: value})
+                        break
+            new = tmps
         else:
-            utils.json_write([value], self.wf.datafile('opts_ignore.json'))
+            new = [{key: value}]
 
-    def add_template(self, template):
-        """Add a new template in JSON format to `pandoc_templates.json`.
-        """
-        templates = utils.json_read(self.wf.datafile('pandoc_templates.json'))
-        clean_cmd = self._parse_template(template)
+        utils.json_write(new, self.wf.datafile('user_templates.json'))
+        return True
 
-    
-    #---------------------------------------------
-    ##### `Store` lower-level methods
-    #---------------------------------------------
 
     @staticmethod
     def _parse_query(query):
@@ -660,10 +883,11 @@ class PanDoctor(object):
         flag, value = [s.strip() for s in components]
         return (flag, value)
 
-    def flip_value(self, option):
+
+    def _flip_value(self, option):
         """Return only options of specified type.
         """
-        runner_opts = [k for k in self.runner.keys() if k not in KEYS]
+        runner_opts = [k for k in self.runner.keys() if k not in RUNNER_KEYS]
         if option not in runner_opts:
             gen_exp = (opt for opt in self.pandoc.options
                         if opt['flag'] == option)
@@ -675,7 +899,8 @@ class PanDoctor(object):
             val = next(gen_exp, None)
             return not val
 
-    def boolean_option(self, option):
+
+    def _is_boolean_option(self, option):
         """Check if option is Boolean.
         """
         dct = [opt for opt in self.pandoc.options 
@@ -686,6 +911,7 @@ class PanDoctor(object):
         else:
             return False
 
+    # TODO
     def _parse_template(self, cmd):
         """Parse a normal `pandoc` command into a proper Pandoctor command.
         """
@@ -739,6 +965,7 @@ class PanDoctor(object):
         
         return cmd_list
 
+
     @staticmethod
     def _splitter(s):
         """Split ``s`` by spaces, except for text in quotes.
@@ -750,20 +977,23 @@ class PanDoctor(object):
         return parts
 
 
-    #-------------------------------------------------------
-    ## `Launch` method
-    #-------------------------------------------------------
+#-------------------------------------------------------
+## `Launch` method
+#-------------------------------------------------------
 
-    def do_launch(self):
+
+    def launch_codepath(self):
         """Run Alfred filter.
         """
-        self.launch(self.trigger, self.query.strip())
+        self._launch(self.flag, self.arg)
+
 
     #---------------------------------------------
     #### `Launch` sub-methods
     #---------------------------------------------
 
-    def launch(self, trigger, arg):
+
+    def _launch(self, trigger, arg):
         """Launch appropriate Alfred action via External Trigger.
         """
         trigger = _applescriptify(trigger)
@@ -774,9 +1004,11 @@ class PanDoctor(object):
             scpt = TRIGGER_ALFRED.format(trigger, n_arg)
             run_applescript(scpt)
 
+
     #---------------------------------------------
     ##### `Launch` lower-level methods
     #---------------------------------------------
+
 
     def _check_query(self, query):
         """Get proper `pandoc` name of format from file extension.
@@ -795,68 +1027,61 @@ class PanDoctor(object):
             return query
 
 
-    #-------------------------------------------------------
-    ## `Run` method
-    #-------------------------------------------------------
+#-------------------------------------------------------
+## `Run` method
+#-------------------------------------------------------
 
-    def do_run(self):
+
+    def run_codepath(self):
         """Run `pandoc` with all chosen options.
         """
-        if self.type == 'gui':
+        if self.flag == 'gui':
             return self.run_gui_cmd()
         else:
-            return self.run_template_cmd(self.type)
+            return self.run_template_cmd(self.flag)
+
 
     #---------------------------------------------
-    ## `Run` sub-methods
+    ## `Run` main branches
     #---------------------------------------------
+
 
     def run_template_cmd(self, template):
         """Run user-selected template command.
         """
-        templates = utils.json_read(self.wf.datafile('pandoc_templates.json'))
-        defaults = [opt['full'] for opt in self.pandoc.options
-                    if opt['status'] == True]
-        input_path = self.get_input_path()[0]
+        tmps = utils.json_read(self.wf.workflowfile('pandoc_templates.json'))
+        
 
-        for temp in templates:
+        for temp in tmps:
             if temp['name'] == template.strip():
                 args = temp['options']
 
                 if temp['use_defaults'] == True:
+                    defaults = [opt['full'] for opt in self.pandoc.options
+                                if opt['status'] == True]
                     args.extend(defaults)
 
-                for i, arg in enumerate(args):
-                    # Replace any and all variables with correct data
-                    if '{input_file}' == arg:
-                        args[i] = arg.format(input_file=input_path)
-                    elif '{input_name}' in arg:
-                        input_name = os.path.splitext(input_path)[0]
-                        args[i] = arg.format(input_name=input_name)
-                    elif '{input_dir}' in arg:
-                        input_dir = os.path.dirname(input_path)
-                        args[i] = arg.format(input_dir=input_dir)
-
+                args = self._format_template(args)
+                
         self.run_pandoc(args)
-        self.do_clean()
-        return 'File successfully created!'
+
 
     def run_gui_cmd(self):
         """Run `pandoc` on command created via Pandoctor GUI.
         """
         pandoc_args = []
-        pandoc_args.extend(self.get_input_format())
-        pandoc_args.extend(self.get_output_format())
-        pandoc_args.extend(self.get_opts())
-        pandoc_args.extend(self.get_input_path())
+        pandoc_args.extend(self._get_input_format())
+        pandoc_args.extend(self._get_output_format())
+        pandoc_args.extend(self._get_options())
+        pandoc_args.extend(self._get_input_path())
         
         self.run_pandoc(pandoc_args)
-        self.do_clean()
-        return 'File successfully created!'
+
 
     #-------------------------------------------------
     ### `Run` sub-methods
     #-------------------------------------------------
+
 
     def run_pandoc(self, extra_args):
         """Run `pandoc` with all arguments.
@@ -865,32 +1090,46 @@ class PanDoctor(object):
         args.extend(extra_args)
         self.wf.logger.debug(args)
         try:
-            return subprocess.check_output(args).decode('utf-8')
+            subprocess.check_output(args).decode('utf-8')
+            self.clean_codepath()
+            return 'File successfully created!'
         except subprocess.CalledProcessError as e:
-            print e.output
+            self.wf.logger.debug(e.output)
+            return e.output
 
-    def get_input_path(self):
+
+    #---------------------------------------------
+    # `Run` lower-level method
+    #---------------------------------------------
+
+
+    def _get_input_path(self):
         """Get path of input file.
         """
-        in_path = self.get_run_val('in_path')
+        in_path = self._runner_val('in_path')
         return [in_path]
 
-    def get_input_format(self):
+
+    def _get_input_format(self):
         """Get format of input file.
         """
-        in_fmt = self.get_run_val('in_fmt')
+        in_fmt = self._runner_val('in_format')
         return ["--from=" + in_fmt]
 
-    def get_output_format(self):
+
+    def _get_output_format(self):
         """Get format of output file.
         """
-        out_fmt = self.get_run_val('out_fmt')
+        out_fmt = self._runner_val('out_format')
+        if out_fmt == 'pdf':
+            out_fmt = 'latex'
         return ["--to=" + out_fmt]
 
-    def get_opts(self):
+
+    def _get_options(self):
         """Get all chosen options.
         """
-        runner_opts = [k for k in self.runner.keys() if k not in KEYS]
+        runner_opts = [k for k in self.runner.keys() if k not in RUNNER_KEYS]
 
         on_opts = []
         for opt in self.pandoc.options:
@@ -910,11 +1149,11 @@ class PanDoctor(object):
         # Check if explicit output file is specified
         check = next((opt for opt in on_opts if '--output' in opt), None)
         if check == None:
-            out_fmt = self.get_output_format()[0].split('=')[1]
+            out_fmt = self._runner_val('out_format')
             for ext, fmt in FORMATS.items():
                 if fmt == out_fmt:
                     out_fmt = ext
-            input_path = self.get_input_path()[0]
+            input_path = self._get_input_path()[0]
             input_file = os.path.splitext(input_path)[0]
             output = '.'.join([input_file, out_fmt])
             output = "--output={}".format(output)
@@ -922,22 +1161,37 @@ class PanDoctor(object):
         return on_opts
 
 
-    #---------------------------------------------
-    # `Run` lower-level method
-    #---------------------------------------------
-
-    def get_run_val(self, key):
+    def _runner_val(self, key):
         """Get the value for ``key`` from ``runner.cache``.
         """
         val = next((v for k, v in self.runner.items() if k == key), None)
         return val
 
 
+    def _format_template(self, args):
+        """Format the variables in a Template.
+        """
+        input_path = self._get_input_path()[0]
+
+        for i, arg in enumerate(args):
+            # Replace any and all variables with correct data
+            if '{input_file}' == arg:
+                args[i] = arg.format(input_file=input_path)
+            elif '{input_name}' in arg:
+                input_name = os.path.splitext(input_path)[0]
+                args[i] = arg.format(input_name=input_name)
+            elif '{input_dir}' in arg:
+                input_dir = os.path.dirname(input_path)
+                args[i] = arg.format(input_dir=input_dir)
+        return args
+
+
     #-------------------------------------------------------
     ## `Clean` methods
     #-------------------------------------------------------
 
-    def do_clean(self):
+
+    def clean_codepath(self):
         """Clean up cache for next run.
         """
         runner = self.wf.cachefile('runner.cache')
@@ -948,10 +1202,9 @@ class PanDoctor(object):
 
 def main(wf):
     """main"""
-    
     args = wf.args
-    #args = ['run', 'gui']
     args = docopt(__usage__, argv=args, version=__version__)
+    wf.logger.debug(args)
     pd = PanDoctor(wf)
     res = pd.run(args)
     if res:
