@@ -26,7 +26,7 @@ from bs4 import BeautifulSoup
 from docopt import docopt
 
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 __usage__ = """
 PanDoctor -- An Alfred GUI for `pandoc`
@@ -1049,8 +1049,9 @@ class PanDoctor(object):
     def run_template_cmd(self, template):
         """Run user-selected template command.
         """
-        tmps = utils.json_read(self.wf.workflowfile('pandoc_templates.json'))
-        
+        tmps = utils.json_read(self.wf.datafile('user_templates.json'))
+        if tmps == None:
+            tmps = utils.json_read(self.wf.workflowfile('pandoc_templates.json'))
 
         for temp in tmps:
             if temp['name'] == template.strip():
@@ -1063,7 +1064,7 @@ class PanDoctor(object):
 
                 args = self._format_template(args)
                 
-        self.run_pandoc(args)
+        return self.run_pandoc(args)
 
 
     def run_gui_cmd(self):
@@ -1075,7 +1076,7 @@ class PanDoctor(object):
         pandoc_args.extend(self._get_options())
         pandoc_args.extend(self._get_input_path())
         
-        self.run_pandoc(pandoc_args)
+        return self.run_pandoc(pandoc_args)
 
 
     #-------------------------------------------------
