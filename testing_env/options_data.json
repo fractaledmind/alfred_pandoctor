@@ -1,0 +1,363 @@
+{
+	"--parse-raw": {
+		"inputs": [
+			"html",
+			"latex"
+		],
+		"outputs": [
+			"markdown",
+			"reStructuredText",
+			"html",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"reveal.js",
+			"s5"
+		]
+	},
+	"--smart": {
+		"inputs": [
+			"markdown",
+			"markdown_strict",
+			"textile"
+		],
+		"automatics": [
+			{"input": "textile"},
+			{"output": "latex"},
+			{"output": "context"}
+		]
+	},
+	"--old-dashes": {
+		"automatics": [
+			{"input": "textile"}
+		]
+	},
+	"--default-image-extension": {
+		"inputs": [
+			"markdown",
+			"latex"
+		]
+	},
+	"--track-changes": {
+		"inputs": [
+			"docx"
+		]
+	},
+	"--extract-media": {
+		"inputs": [
+			"docx",
+			"epub"
+		]
+	},
+	"--standalone": {
+		"automatics": [
+			{"output": "pdf"},
+			{"output": "epub"},
+			{"output": "epub3"},
+			{"output": "fb2"},
+			{"output": "docx"},
+			{"output": "odt"}
+		]
+	},
+	"--toc": {
+		"no-effect": [
+			"man",
+			"docbook",
+			"slidy",
+			"slideous",
+			"s5",
+			"docx",
+			"odt"
+		]
+	},
+	"--self-contained": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--html-q-tags": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--ascii": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--reference-links": {
+		"outputs": [
+			"markdown",
+			"reStructuredText"
+		]
+	},
+	"--atx-headers": {
+		"outputs": [
+			"markdown",
+			"asciidoc"
+		]
+	},
+	"--chapters": {
+		"outputs": [
+			"latex",
+			"context",
+			"docbook"
+		]
+	},
+	"--number-sections": {
+		"outputs": [
+			"latex",
+			"context",
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs",
+			"epub"
+		]
+	},
+	"--number-offset": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--no-tex-ligatures": {
+		"outputs": [
+			"latex",
+			"context"
+		]
+	},
+	"--listings": {
+		"outputs": [
+			"beamer",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides"
+		]
+	},
+	"--slide-level": {
+		"outputs": [
+			"beamer",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides"
+		]
+	},
+	"--email-obfuscation": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--id-prefix": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs",
+			"docbook",
+			"markdown"
+		]
+	},
+	"--title-prefix": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--css": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--reference-odt": {
+		"outputs": [
+			"odt"
+		]
+	},
+	"--reference-docx": {
+		"outputs": [
+			"docx"
+		]
+	},
+	"--epub-stylesheet": {
+		"outputs": [
+			"epub",
+			"epub3"
+		]
+	},
+	"--epub-cover-image": {
+		"outputs": [
+			"epub",
+			"epub3"
+		]
+	},
+	"--epub-metadata": {
+		"outputs": [
+			"epub",
+			"epub3"
+		]
+	},
+	"--epub-embed-font": {
+		"outputs": [
+			"epub",
+			"epub3"
+		]
+	},
+	"--epub-chapter-level": {
+		"outputs": [
+			"epub",
+			"epub3"
+		]
+	},
+	"--latex-engine": {
+		"outputs": [
+			"pdf"
+		]
+	},
+	"--natbib": {
+		"outputs": [
+			"latex"
+		]
+	},
+	"--biblatex": {
+		"outputs": [
+			"latex"
+		]
+	},
+	"--latexmathml": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--mathml": {
+		"outputs": [
+			"html",
+			"html5",
+			"docbook"
+		]
+	},
+	"--jsmath": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--mathjax": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--gladtex": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--mimetex": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	},
+	"--webtex": {
+		"outputs": [
+			"html",
+			"html5",
+			"html+lhs",
+			"s5",
+			"slidy",
+			"slideous",
+			"dzslides",
+			"revealjs"
+		]
+	}
+}

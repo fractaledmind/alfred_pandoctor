@@ -1,0 +1,181 @@
+18:21:53 workflow.py:1384 DEBUG    No data stored for `pandoc`
+18:22:27 workflow.py:1384 DEBUG    No data stored for `pandoc`
+18:22:47 workflow.py:1384 DEBUG    No data stored for `pandoc`
+18:23:59 workflow.py:1384 DEBUG    No data stored for `pandoc`
+18:24:18 workflow.py:1384 DEBUG    No data stored for `pandoc`
+18:24:56 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+18:25:10 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+18:25:10 workflow.py:1405 DEBUG    No data stored for `pandoc`
+18:25:18 workflow.py:1473 DEBUG    Stored data saved at : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+18:25:18 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+18:25:18 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+18:25:34 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+18:25:34 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+18:25:34 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+18:25:34 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:09:47 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:09:47 workflow.py:1405 DEBUG    No data stored for `pandoc`
+21:09:50 workflow.py:1473 DEBUG    Stored data saved at : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:09:50 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:09:50 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:25:42 workflow.py:1836 ERROR    global name '__usage__' is not defined
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/testing.py", line 20, in main
+    args = docopt(__usage__, argv=args, version=__version__)
+NameError: global name '__usage__' is not defined
+21:25:53 workflow.py:1836 ERROR    docopt() takes at least 1 argument (1 given)
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/testing.py", line 20, in main
+    args = docopt(argv=args)
+TypeError: docopt() takes at least 1 argument (1 given)
+21:26:20 workflow.py:1836 ERROR    "usage:" (case-insensitive) not found.
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/testing.py", line 22, in main
+    args = docopt(__usage__, argv=args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/lib/docopt.py", line 558, in docopt
+    DocoptExit.usage = printable_usage(doc)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/lib/docopt.py", line 468, in printable_usage
+    raise DocoptLanguageError('"usage:" (case-insensitive) not found.')
+DocoptLanguageError: "usage:" (case-insensitive) not found.
+21:26:39 workflow.py:1836 ERROR    "usage:" (case-insensitive) not found.
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/testing.py", line 23, in main
+    args = docopt(__usage__, argv=args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/lib/docopt.py", line 558, in docopt
+    DocoptExit.usage = printable_usage(doc)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/lib/docopt.py", line 468, in printable_usage
+    raise DocoptLanguageError('"usage:" (case-insensitive) not found.')
+DocoptLanguageError: "usage:" (case-insensitive) not found.
+21:30:40 pandoctor.py:1069 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:30:40 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:30:40 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:30:40 workflow.py:1836 ERROR    local variable 'header' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 1071, in main
+    res = pd.run(args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 304, in run
+    return method()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 379, in search_codepath
+    self._add_header()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 583, in _add_header
+    self.wf.add_item(header,
+UnboundLocalError: local variable 'header' referenced before assignment
+21:32:13 pandoctor.py:1072 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:32:13 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:32:13 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:32:13 workflow.py:1836 ERROR    local variable 'header' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 1074, in main
+    res = pd.run(args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 307, in run
+    return method()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 382, in search_codepath
+    self._add_header()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 586, in _add_header
+    self.wf.add_item(header,
+UnboundLocalError: local variable 'header' referenced before assignment
+21:33:18 pandoctor.py:1070 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:33:18 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:33:18 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:33:18 workflow.py:1836 ERROR    local variable 'header' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 1072, in main
+    res = pd.run(args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 304, in run
+    return method()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 379, in search_codepath
+    self._add_header()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 584, in _add_header
+    self.wf.add_item(header,
+UnboundLocalError: local variable 'header' referenced before assignment
+21:33:40 pandoctor.py:1070 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:33:40 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:33:40 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:33:40 workflow.py:1836 ERROR    local variable 'header' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 1072, in main
+    res = pd.run(args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 304, in run
+    return method()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 379, in search_codepath
+    self._add_header()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 584, in _add_header
+    self.wf.add_item(header,
+UnboundLocalError: local variable 'header' referenced before assignment
+21:34:03 pandoctor.py:1070 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:34:03 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:34:03 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json
+21:34:03 workflow.py:1836 ERROR    local variable 'header' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/workflow/workflow.py", line 1834, in run
+    func(self)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 1072, in main
+    res = pd.run(args)
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 304, in run
+    return method()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 379, in search_codepath
+    self._add_header()
+  File "/Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/workflow_dir/pandoctor.py", line 584, in _add_header
+    self.wf.add_item(header,
+UnboundLocalError: local variable 'header' referenced before assignment
+21:34:18 pandoctor.py:1069 DEBUG    {u'<argument>': u'',
+ u'<flag>': u'options',
+ u'config': False,
+ u'help': False,
+ u'launch': False,
+ u'run': False,
+ u'search': True,
+ u'store': False}
+21:34:18 workflow.py:1399 DEBUG    Data `pandoc` stored in `json` format
+21:34:18 workflow.py:1414 DEBUG    Stored data loaded from : /Users/smargheim/Documents/DEVELOPMENT/GitHub/Pandoctor/testing_env/data_dir/pandoc.json

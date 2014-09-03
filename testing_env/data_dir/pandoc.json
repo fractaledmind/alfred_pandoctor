@@ -1,0 +1,809 @@
+{
+  "inputs": [
+    {
+      "description": "native Haskell", 
+      "arg": "native"
+    }, 
+    {
+      "description": "JSON version of native AST", 
+      "arg": "json"
+    }, 
+    {
+      "description": "pandoc\u2019s extended markdown", 
+      "arg": "markdown"
+    }, 
+    {
+      "description": "original unextended markdown", 
+      "arg": "markdown_strict"
+    }, 
+    {
+      "description": "PHP Markdown Extra extended markdown", 
+      "arg": "markdown_phpextra"
+    }, 
+    {
+      "description": "github extended markdown", 
+      "arg": "markdown_github"
+    }, 
+    {
+      "description": "Textile", 
+      "arg": "textile"
+    }, 
+    {
+      "description": "reStructuredText", 
+      "arg": "rst"
+    }, 
+    {
+      "description": "HTML", 
+      "arg": "html"
+    }, 
+    {
+      "description": "DocBook", 
+      "arg": "docbook"
+    }, 
+    {
+      "description": "txt2tags", 
+      "arg": "t2t"
+    }, 
+    {
+      "description": "docx", 
+      "arg": "docx"
+    }, 
+    {
+      "description": "EPUB", 
+      "arg": "epub"
+    }, 
+    {
+      "description": "OPML", 
+      "arg": "opml"
+    }, 
+    {
+      "description": "Emacs Org-mode", 
+      "arg": "org"
+    }, 
+    {
+      "description": "MediaWiki markup", 
+      "arg": "mediawiki"
+    }, 
+    {
+      "description": "Haddock markup", 
+      "arg": "haddock"
+    }, 
+    {
+      "description": "LaTeX", 
+      "arg": "latex"
+    }
+  ], 
+  "outputs": [
+    {
+      "description": "Portable Document Format", 
+      "arg": "pdf"
+    }, 
+    {
+      "description": "native Haskell", 
+      "arg": "native"
+    }, 
+    {
+      "description": "JSON version of native AST", 
+      "arg": "json"
+    }, 
+    {
+      "description": "plain text", 
+      "arg": "plain"
+    }, 
+    {
+      "description": "pandoc\u2019s extended markdown", 
+      "arg": "markdown"
+    }, 
+    {
+      "description": "original unextended markdown", 
+      "arg": "markdown_strict"
+    }, 
+    {
+      "description": "PHP Markdown extra extended markdown", 
+      "arg": "markdown_phpextra"
+    }, 
+    {
+      "description": "github extended markdown", 
+      "arg": "markdown_github"
+    }, 
+    {
+      "description": "reStructuredText", 
+      "arg": "rst"
+    }, 
+    {
+      "description": "XHTML 1", 
+      "arg": "html"
+    }, 
+    {
+      "description": "HTML 5", 
+      "arg": "html5"
+    }, 
+    {
+      "description": "LaTeX", 
+      "arg": "latex"
+    }, 
+    {
+      "description": "LaTeX beamer slide show", 
+      "arg": "beamer"
+    }, 
+    {
+      "description": "ConTeXt", 
+      "arg": "context"
+    }, 
+    {
+      "description": "groff man", 
+      "arg": "man"
+    }, 
+    {
+      "description": "MediaWiki markup", 
+      "arg": "mediawiki"
+    }, 
+    {
+      "description": "DokuWiki markup", 
+      "arg": "dokuwiki"
+    }, 
+    {
+      "description": "Textile", 
+      "arg": "textile"
+    }, 
+    {
+      "description": "Emacs Org-Mode", 
+      "arg": "org"
+    }, 
+    {
+      "description": "GNU Texinfo", 
+      "arg": "texinfo"
+    }, 
+    {
+      "description": "OPML", 
+      "arg": "opml"
+    }, 
+    {
+      "description": "DocBook", 
+      "arg": "docbook"
+    }, 
+    {
+      "description": "OpenDocument", 
+      "arg": "opendocument"
+    }, 
+    {
+      "description": "OpenOffice text document", 
+      "arg": "odt"
+    }, 
+    {
+      "description": "Word docx", 
+      "arg": "docx"
+    }, 
+    {
+      "description": "Haddock markup", 
+      "arg": "haddock"
+    }, 
+    {
+      "description": "rich text format", 
+      "arg": "rtf"
+    }, 
+    {
+      "description": "EPUB v2 book", 
+      "arg": "epub"
+    }, 
+    {
+      "description": "EPUB v3", 
+      "arg": "epub3"
+    }, 
+    {
+      "description": "FictionBook2 e-book", 
+      "arg": "fb2"
+    }, 
+    {
+      "description": "AsciiDoc", 
+      "arg": "asciidoc"
+    }, 
+    {
+      "description": "InDesign ICML", 
+      "arg": "icml"
+    }, 
+    {
+      "description": "Slidy HTML and javascript slide show", 
+      "arg": "slidy"
+    }, 
+    {
+      "description": "Slideous HTML and javascript slide show", 
+      "arg": "slideous"
+    }, 
+    {
+      "description": "DZSlides HTML5 + javascript slide show", 
+      "arg": "dzslides"
+    }, 
+    {
+      "description": "reveal.js HTML5 + javascript slide show", 
+      "arg": "revealjs"
+    }, 
+    {
+      "description": "S5 HTML and javascript slide show", 
+      "arg": "s5"
+    }
+  ], 
+  "arg_options": [
+    "-f FORMAT, -r FORMAT, --from=FORMAT, --read=FORMAT", 
+    "-t FORMAT, -w FORMAT, --to=FORMAT, --write=FORMAT", 
+    "-o FILE, --output=FILE", 
+    "--data-dir=DIRECTORY", 
+    "--base-header-level=NUMBER", 
+    "--indented-code-classes=CLASSES", 
+    "--default-image-extension=EXTENSION", 
+    "--filter=EXECUTABLE", 
+    "-M KEY[=VAL], --metadata=KEY[:VAL]", 
+    "--tab-stop=NUMBER", 
+    "--track-changes=accept|reject|all", 
+    "--extract-media=DIR", 
+    "--template=FILE", 
+    "-V KEY[=VAL], --variable=KEY[:VAL]", 
+    "-D FORMAT, --print-default-template=FORMAT", 
+    "--print-default-data-file=FILE", 
+    "--columns=NUMBER", 
+    "--toc-depth=NUMBER", 
+    "--highlight-style=STYLE", 
+    "-H FILE, --include-in-header=FILE", 
+    "-B FILE, --include-before-body=FILE", 
+    "-A FILE, --include-after-body=FILE", 
+    "--number-offset=NUMBER[,NUMBER,\u2026],", 
+    "--slide-level=NUMBER", 
+    "--email-obfuscation=none|javascript|references", 
+    "--id-prefix=STRING", 
+    "-T STRING, --title-prefix=STRING", 
+    "-c URL, --css=URL", 
+    "--reference-odt=FILE", 
+    "--reference-docx=FILE", 
+    "--epub-stylesheet=FILE", 
+    "--epub-cover-image=FILE", 
+    "--epub-metadata=FILE", 
+    "--epub-embed-font=FILE", 
+    "--epub-chapter-level=NUMBER", 
+    "--latex-engine=pdflatex|lualatex|xelatex", 
+    "--bibliography=FILE", 
+    "--csl=FILE", 
+    "--citation-abbreviations=FILE", 
+    "-m [URL], --latexmathml[=URL]", 
+    "--mathml[=URL]", 
+    "--jsmath[=URL]", 
+    "--mathjax[=URL]", 
+    "--mimetex[=URL]", 
+    "--webtex[=URL]"
+  ], 
+  "version": "1.13.0.1", 
+  "path": "/usr/local/bin/pandoc", 
+  "options": [
+    {
+      "arg_type": "FORMAT", 
+      "status": false, 
+      "flag": "from", 
+      "full": "--from=FORMAT", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FORMAT", 
+      "status": false, 
+      "flag": "to", 
+      "full": "--to=FORMAT", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "output", 
+      "full": "--output=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "DIRECTORY", 
+      "status": false, 
+      "flag": "data-dir", 
+      "full": "--data-dir=DIRECTORY", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "strict", 
+      "full": "--strict", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": true, 
+      "flag": "parse-raw", 
+      "full": "--parse-raw", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": true, 
+      "flag": "smart", 
+      "full": "--smart", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "old-dashes", 
+      "full": "--old-dashes", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "base-header-level", 
+      "full": "--base-header-level=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "STRING", 
+      "status": false, 
+      "flag": "indented-code-classes", 
+      "full": "--indented-code-classes=STRING", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "PROGRAM", 
+      "status": false, 
+      "flag": "filter", 
+      "full": "--filter=PROGRAM", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": true, 
+      "flag": "normalize", 
+      "full": "--normalize", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "preserve-tabs", 
+      "full": "--preserve-tabs", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "tab-stop", 
+      "full": "--tab-stop=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "accept|reject|all", 
+      "status": false, 
+      "flag": "track-changes", 
+      "full": "--track-changes=accept|reject|all", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "PATH", 
+      "status": false, 
+      "flag": "extract-media", 
+      "full": "--extract-media=PATH", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": true, 
+      "flag": "standalone", 
+      "full": "--standalone", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "template", 
+      "full": "--template=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "KEY[:VALUE]", 
+      "status": false, 
+      "flag": "metadata", 
+      "full": "--metadata=KEY[:VALUE]", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "KEY[:VALUE]", 
+      "status": false, 
+      "flag": "variable", 
+      "full": "--variable=KEY[:VALUE]", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FORMAT", 
+      "status": false, 
+      "flag": "print-default-template", 
+      "full": "--print-default-template=FORMAT", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILE", 
+      "status": false, 
+      "flag": "print-default-data-file", 
+      "full": "--print-default-data-file=FILE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "no-wrap", 
+      "full": "--no-wrap", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "columns", 
+      "full": "--columns=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "toc", 
+      "full": "--toc", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "toc-depth", 
+      "full": "--toc-depth=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "no-highlight", 
+      "full": "--no-highlight", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "STYLE", 
+      "status": false, 
+      "flag": "highlight-style", 
+      "full": "--highlight-style=STYLE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "include-in-header", 
+      "full": "--include-in-header=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "include-before-body", 
+      "full": "--include-before-body=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "include-after-body", 
+      "full": "--include-after-body=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "self-contained", 
+      "full": "--self-contained", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "offline", 
+      "full": "--offline", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "html5", 
+      "full": "--html5", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "html-q-tags", 
+      "full": "--html-q-tags", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "ascii", 
+      "full": "--ascii", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "reference-links", 
+      "full": "--reference-links", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "atx-headers", 
+      "full": "--atx-headers", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "chapters", 
+      "full": "--chapters", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "number-sections", 
+      "full": "--number-sections", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBERS", 
+      "status": false, 
+      "flag": "number-offset", 
+      "full": "--number-offset=NUMBERS", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "no-tex-ligatures", 
+      "full": "--no-tex-ligatures", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "listings", 
+      "full": "--listings", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "incremental", 
+      "full": "--incremental", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "slide-level", 
+      "full": "--slide-level=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "section-divs", 
+      "full": "--section-divs", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "extension", 
+      "status": false, 
+      "flag": "default-image-extension", 
+      "full": "--default-image-extension=extension", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "none|javascript|references", 
+      "status": false, 
+      "flag": "email-obfuscation", 
+      "full": "--email-obfuscation=none|javascript|references", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "STRING", 
+      "status": false, 
+      "flag": "id-prefix", 
+      "full": "--id-prefix=STRING", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "STRING", 
+      "status": false, 
+      "flag": "title-prefix", 
+      "full": "--title-prefix=STRING", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "css", 
+      "full": "--css=URL", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "reference-odt", 
+      "full": "--reference-odt=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "reference-docx", 
+      "full": "--reference-docx=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "epub-stylesheet", 
+      "full": "--epub-stylesheet=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "epub-cover-image", 
+      "full": "--epub-cover-image=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILENAME", 
+      "status": false, 
+      "flag": "epub-metadata", 
+      "full": "--epub-metadata=FILENAME", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILE", 
+      "status": false, 
+      "flag": "epub-embed-font", 
+      "full": "--epub-embed-font=FILE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "NUMBER", 
+      "status": false, 
+      "flag": "epub-chapter-level", 
+      "full": "--epub-chapter-level=NUMBER", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "PROGRAM", 
+      "status": false, 
+      "flag": "latex-engine", 
+      "full": "--latex-engine=PROGRAM", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILE", 
+      "status": false, 
+      "flag": "bibliography", 
+      "full": "--bibliography=FILE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILE", 
+      "status": false, 
+      "flag": "csl", 
+      "full": "--csl=FILE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": "FILE", 
+      "status": false, 
+      "flag": "citation-abbreviations", 
+      "full": "--citation-abbreviations=FILE", 
+      "type": "Argument (required)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "natbib", 
+      "full": "--natbib", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "biblatex", 
+      "full": "--biblatex", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "latexmathml", 
+      "full": "--latexmathml[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "mathml", 
+      "full": "--mathml[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "mimetex", 
+      "full": "--mimetex[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "webtex", 
+      "full": "--webtex[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "jsmath", 
+      "full": "--jsmath[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": "URL", 
+      "status": false, 
+      "flag": "mathjax", 
+      "full": "--mathjax[=URL]", 
+      "type": "Argument (optional)"
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "gladtex", 
+      "full": "--gladtex", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "trace", 
+      "full": "--trace", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "dump-args", 
+      "full": "--dump-args", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "ignore-args", 
+      "full": "--ignore-args", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "version", 
+      "full": "--version", 
+      "type": "Boolean  (on/off)  "
+    }, 
+    {
+      "arg_type": null, 
+      "status": false, 
+      "flag": "help", 
+      "full": "--help", 
+      "type": "Boolean  (on/off)  "
+    }
+  ]
+}
