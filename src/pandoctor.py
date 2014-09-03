@@ -17,16 +17,16 @@ import subprocess
 
 # Workflow Library
 import utils
-from workflow import Workflow, web, bundler
+from workflow import Workflow, web
 from workflow.workflow import MATCH_ALL, MATCH_ALLCHARS
 
-# Bundler Library
-bundler.init()
+# Dependencies Library
+sys.path.insert(0, Workflow().workflowfile('lib/'))
 from bs4 import BeautifulSoup
 from docopt import docopt
 
 
-__version__ = '1.0.2'
+__version__ = '1.0.5'
 
 __usage__ = """
 PanDoctor -- An Alfred GUI for `pandoc`
@@ -1173,17 +1173,15 @@ class PanDoctor(object):
         """Format the variables in a Template.
         """
         input_path = self._get_input_path()[0]
+        input_name = os.path.splitext(input_path)[0]
+        input_dir = os.path.dirname(input_path)
 
         for i, arg in enumerate(args):
             # Replace any and all variables with correct data
-            if '{input_file}' == arg:
-                args[i] = arg.format(input_file=input_path)
-            elif '{input_name}' in arg:
-                input_name = os.path.splitext(input_path)[0]
-                args[i] = arg.format(input_name=input_name)
-            elif '{input_dir}' in arg:
-                input_dir = os.path.dirname(input_path)
-                args[i] = arg.format(input_dir=input_dir)
+            arg = arg.replace('{input_file}', input_path)
+            arg = arg.replace('{input_name}', input_name)
+            arg = arg.replace('{input_dir}', input_dir)
+            args[i] = arg
         return args
 
 

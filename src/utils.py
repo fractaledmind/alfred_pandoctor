@@ -103,6 +103,14 @@ def to_unicode(text, encoding='utf-8'):
             text = unicode(text, encoding)
     return text
 
+def to_bool(text):
+    """Convert string to Boolean"""
+
+    if str(text).lower() in ('true', 't', '1'):
+        return True
+    elif str(text).lower() in ('false', 'f', '0'):
+        return False
+
 ###########################################################################
 # Applescript functions                                                   #
 ###########################################################################
